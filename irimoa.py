@@ -4,6 +4,7 @@
 import socket, psycopg2, datetime, os, threading
 exit_status = False #
 
+# Command and status processing flow
 # Поток обработки команд и статусов
 def server_status():
   print("Started... (Ctrl+C for exit)")
@@ -31,12 +32,15 @@ def server_status():
           conn.send(b'command not found')
     conn.close()
 
+# Feed the port read and send to the database    
 # Поток чтения порта и отправки в базу
 def server_udp():
+  # Start listening to the port
   # Запуск прослушивания порта
   sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
   server_address = ('', 514)
   sock.bind(server_address)
+  # Connection to the database
   # Подключение к базе
   conn_string = "host='localhost' dbname='dbmoa' user='postgres' password=''"
   try:
@@ -45,16 +49,21 @@ def server_udp():
     print(format(error))
     exit(1)
   cursor = conn_pg.cursor()
-  # Прослушивание порта
+  # Cycle reading port
+  # Цикл чтения порта 
   while True:
     if exit_status:
       break
     mes, addr = sock.recvfrom(2048)
+    # Getting data to write to the database
     # Получение данных для записи в базу
     log_date = datetime.datetime.now().date()
     log_time = datetime.datetime.now().time()
     log_ip = addr[0]
-    log_text = mes.decode('utf-8')[:200]# Ограниение на длину сообщения
+    # Message length limit
+    # Ограниение на длину сообщения
+    log_text = mes.decode('utf-8')[:200]
+    # Write to the database
     # Выполнение записи в базу
     try:
       cursor.execute("insert into log(date, time, ip, text) values (%s, %s, %s, %s);",(log_date, log_time ,log_ip, log_text))
@@ -63,6 +72,7 @@ def server_udp():
       print(format(error))
       exit(1)
 
+# Running threads
 # Запуск потоков
 if __name__ =='__main__':
   thread_server_status = threading.Thread(target=server_status, name="server_status")
