@@ -1,0 +1,2 @@
+# moamoa
+Logs server collector
