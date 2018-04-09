@@ -62,7 +62,7 @@ server_status_loop = setTimeout(tick, 10000);
 <div id="list" style="position:absolute;top:105px;padding-top:5px;padding-left:5px;border:1px solid;width:1000px;height:560px;white-space:nowrap;overflow-x:auto;">
 {% if log_list %}
 {% for log in log_list  %}
-    {{ log.date | date:"Y-m-d" }} {{ log.time | time:"h:i:s.u" }} {{ log.ip  }} || {{ log.text }}<br>
+    {{ log.date | date:"Y-m-d" }} {{ log.time | time:"H:i:s.u" }} {{ log.ip  }} || {{ log.text }}<br>
 {% endfor %}
 {% else %}
     Rows not found
