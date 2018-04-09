@@ -1,54 +1,56 @@
 <script>
 //filter_req
-var filter_last = "";
+var filter_text = "";
 function filter_req(event)
+{
+if (event.keyCode == 13)
     {
-    if (event.keyCode == 13 && filter_last != document.getElementById("filter").value)
-	{
-	filter_last = document.getElementById("filter").value;
-	document.getElementById("filter_status").innerHTML = "Search starting...";
-	var time = performance.now();
-	//request
-	var csrftoken = '{{ csrf_token }}';
-	var req = new XMLHttpRequest();
-        req.open('POST', '/filter', true);
-	req.setRequestHeader('X-CSRFToken', csrftoken);
-        req.onreadystatechange = function()
-		{
-        	if (req.readyState == XMLHttpRequest.DONE)
-		    {
-		    document.getElementById("list").innerHTML = req.responseText;
-		    time = (performance.now() - time)/1000;
-		    document.getElementById("filter_status").innerHTML = "Search completed, time: "+time.toFixed(3)+" sec";
-		    }
-		}
-        req.send(filter_last);
-	}
-    };
-
-//server_status_loop
-server_status_loop = setTimeout(function tick()
-    {
-    //server_status
-    server_status = document.getElementById("server_status");
-    server_status_canv = server_status.getContext('2d');
+    filter_text = document.getElementById("filter").value;
+    document.getElementById("filter_status").innerHTML = "Search starting...";
+    var time = performance.now();
     //request
     var csrftoken = '{{ csrf_token }}';
     var req = new XMLHttpRequest();
-    req.open('POST', '/server_status', true);
+    req.open('POST', '/filter', true);
     req.setRequestHeader('X-CSRFToken', csrftoken);
     req.onreadystatechange = function()
-	{
-	server_status_canv.fillStyle = "rgb(0,0,0)";
-	server_status_canv.fillRect(0,0,server_status.width,server_status.height);
-    	if (req.readyState == XMLHttpRequest.DONE && req.responseText == 'ok')
-	    { server_status_canv.fillStyle = "rgb(10,250,10)"; }
-	server_status_canv.fillRect(1,1,server_status.width-2,server_status.height-2);
-	}
-    req.send();
-    //
-    server_status_loop = setTimeout(tick, 10000);
-    }, 10000);
+            {
+            if (req.readyState == XMLHttpRequest.DONE && req.status == 200)
+                {
+                if (req.responseText != "")
+                    { document.getElementById("list").innerHTML = req.responseText; }
+                    else { document.getElementById("list").innerHTML = "Rows not found"; }
+                time = (performance.now() - time)/1000;
+                document.getElementById("filter_status").innerHTML = "Search completed, time: "+time.toFixed(3)+" sec";
+                }
+            }
+    req.send(filter_text);
+    };
+};
+
+//server_status_loop
+server_status_loop = setTimeout(function tick()
+{
+//server_status
+server_status = document.getElementById("server_status");
+server_status_canv = server_status.getContext('2d');
+//request
+var csrftoken = '{{ csrf_token }}';
+var req = new XMLHttpRequest();
+req.open('POST', '/server_status', true);
+req.setRequestHeader('X-CSRFToken', csrftoken);
+req.onreadystatechange = function()
+    {
+    server_status_canv.fillStyle = "rgb(0,0,0)";
+    server_status_canv.fillRect(0,0,server_status.width,server_status.height);
+    if (req.readyState == XMLHttpRequest.DONE && req.responseText == 'ok')
+        { server_status_canv.fillStyle = "rgb(10,250,10)"; }
+    server_status_canv.fillRect(1,1,server_status.width-2,server_status.height-2);
+    }
+req.send();
+//
+server_status_loop = setTimeout(tick, 10000);
+}, 10000);
 </script>
 <img style="position:absolute;top:5px;" src="data:image/png;base64,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">
 <div style="position:absolute;top:0px;left:45px;font-size:38px;font-weight:bold;">frumoa</div>
@@ -57,12 +59,12 @@ server_status_loop = setTimeout(function tick()
 <div style="position:absolute;top:75px;left:450px;" id="filter_status"></div>
 <div style="position:absolute;top:75px;left:900px;">Server status:</div>
 <canvas width="10" height="10" style="position:absolute;top:80px;left:992px;" id="server_status"></canvas>
-{% if log_list %}
 <div id="list" style="position:absolute;top:105px;padding-top:5px;padding-left:5px;border:1px solid;width:1000px;height:560px;white-space:nowrap;overflow-x:auto;">
+{% if log_list %}
 {% for log in log_list  %}
     {{ log.date | date:"Y-m-d" }} {{ log.time | time:"h:i:s.u" }} {{ log.ip  }} || {{ log.text }}<br>
 {% endfor %}
-</div>
 {% else %}
-    <div style="position:absolute;top:110px;padding-top:5px;padding-left:5px;">Rows not found</div>
+    Rows not found
 {% endif  %}
+</div>
