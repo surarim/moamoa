@@ -15,7 +15,7 @@ if (event.keyCode == 13)
     req.setRequestHeader('X-CSRFToken', csrftoken);
     req.onreadystatechange = function()
             {
-            if (req.readyState == XMLHttpRequest.DONE && req.status == 200)
+	    if (req.readyState == XMLHttpRequest.DONE && req.status == 200)
                 {
                 if (req.responseText != "")
                     { document.getElementById("list").innerHTML = req.responseText; }

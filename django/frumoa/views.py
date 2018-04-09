@@ -13,7 +13,7 @@ def frumoa_filter(request):
   fsr_list=""
   if log.objects.count() > 0:
     f_list = log.objects.filter(date__icontains = request.body.decode()) | log.objects.filter(time__icontains = request.body.decode()) | log.objects.filter(ip__icontains = request.body.decode()) | log.objects.filter(text__icontains = request.body.decode())
-    fsr_list = f_list.values().order_by('-id')[:30]
+    fs_list = f_list.values().order_by('-id')[:30]
     for item in fs_list:
       fsr_list+=str(item['date'])+" "+str(item['time'])+" "+str(item['ip'])+" || "+item['text']+"<br>"
   return HttpResponse(fsr_list)
