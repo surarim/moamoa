@@ -15,5 +15,5 @@ while True:
     print(mes.decode('utf-8'))
     client.close()
   except OSError:
-   print("Socket not found, server is running?")
+    print("Socket not found, server is running?")
 

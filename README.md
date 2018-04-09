@@ -8,8 +8,8 @@ The log collector consists of two components and works as follows: the irimoa.py
 The journal collector has been tested and assembled on the following components:
 <ul>
   <li>PostgreSQL: 10.3 </li>
-  <li>Python: 3.6.4</li>
+  <li>Python: 3.6.5</li>
   <li>psycopg2: 2.7.4</li>
-  <li>Django: 2.0.3</li>
+  <li>Django: 2.0.4</li>
   <li>uwsgi: 2.0.17</li>
  </ul>

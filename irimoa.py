@@ -19,20 +19,20 @@ def server_status():
   while True:
     conn, addr = sock.accept()
     while True:
-        mes = conn.recv(1024)
-        if not mes: break
-        if mes.decode('utf-8') == "exit":
-          conn.send(b'exit ok')
-          global exit_status
-          exit_status = True
-          exit(0)
-        elif mes.decode('utf-8') == "status":
-          conn.send(b'status ok')
-        else:
-          conn.send(b'command not found')
+      mes = conn.recv(1024)
+      if not mes: break
+      if mes.decode('utf-8') == "exit":
+        conn.send(b'exit ok')
+        global exit_status
+        exit_status = True
+        exit(0)
+      elif mes.decode('utf-8') == "status":
+        conn.send(b'status ok')
+      else:
+        conn.send(b'command not found')
     conn.close()
 
-# Feed the port read and send to the database    
+# Feed the port read and send to the database
 # Поток чтения порта и отправки в базу
 def server_udp():
   # Start listening to the port
