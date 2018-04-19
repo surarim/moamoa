@@ -70,7 +70,14 @@ def application(env, start_response):
         pass
     html = mes
   else:
-    # Method Get - Default page (form)
-    # Метод Get - страница по умолчанию (форма)
-    html = "<html>\n" + head + "<body>\n" + body +"\n</body>\n</html>"
+    if env['PATH_INFO'] == "/favicon.ico":
+      # Method Get - favicon
+      # Метод Get - иконка приложения
+      favicon = open('frumoa.png', 'rb').read()
+      start_response('200 OK', [('Content-Type','image/png'),('Content-Length', str(len(favicon)))])
+      return [favicon]
+    else:
+      # Method Get - Default page (form)
+      # Метод Get - страница по умолчанию (форма)
+      html = "<html>\n" + head + "<body>\n" + body +"\n</body>\n</html>"
   return [html.encode('utf-8')]

@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 import socket, os
 
+# Client for console access to the process of reading the port and writing to the database
+# Клиент для консольного доступа к процессу чтения порта и записи в базу
 print("Started... (Ctrl+C or q for exit)")
 while True:
   mes = input("> ")

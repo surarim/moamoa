@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import socket, psycopg2, datetime, os, threading
-exit_status = False #
+exit_status = False
 
 # Command and status processing flow
 # Поток обработки команд и статусов
@@ -50,7 +50,7 @@ def server_udp():
     exit(1)
   cursor = conn_pg.cursor()
   # Cycle reading port
-  # Цикл чтения порта 
+  # Цикл чтения порта
   while True:
     if exit_status:
       break

@@ -1,6 +1,6 @@
 <script>
-//filter_req
-var filter_text = "";
+// Function of filter search and output to the form
+// Функция поиска по фильтру и вывода в форму
 function filter_req(event)
 {
 filter_text = document.getElementById("filter").value;
@@ -8,11 +8,8 @@ if (event.keyCode == 13)
     {
     document.getElementById("filter_status").innerHTML = "Search starting...";
     var time = performance.now();
-    //request
-    var csrftoken = '{{ csrf_token }}';
     var req = new XMLHttpRequest();
     req.open('POST', '/filter', true);
-    req.setRequestHeader('X-CSRFToken', csrftoken);
     req.onreadystatechange = function()
             {
 	    if (req.readyState == XMLHttpRequest.DONE && req.status == 200)
@@ -28,17 +25,14 @@ if (event.keyCode == 13)
     };
 };
 
-//server_status_loop
+// Function of getting server status (process of reading the port and writing to the database)
+// Функция получения статуса сервера (процесс чтения порта и записи в базу)
 server_status_loop = setTimeout(function tick()
 {
-//server_status
 server_status = document.getElementById("server_status");
 server_status_canv = server_status.getContext('2d');
-//request
-var csrftoken = '{{ csrf_token }}';
 var req = new XMLHttpRequest();
 req.open('POST', '/server_status', true);
-req.setRequestHeader('X-CSRFToken', csrftoken);
 req.onreadystatechange = function()
     {
     server_status_canv.fillStyle = "rgb(0,0,0)";
@@ -52,14 +46,12 @@ req.send();
 server_status_loop = setTimeout(tick, 10000);
 }, 10000);
 
-//default get
+// Function of reading the database when the form starts
+// Функция чтения базы при старте формы
 window.onload = function()
     {
-    //request
-    var csrftoken = '{{ csrf_token }}';
     var req = new XMLHttpRequest();
     req.open('POST', '/default', true);
-    req.setRequestHeader('X-CSRFToken', csrftoken);
     req.onreadystatechange = function()
             {
 	    if (req.readyState == XMLHttpRequest.DONE && req.status == 200)
