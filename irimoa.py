@@ -42,9 +42,8 @@ def server_udp():
   sock.bind(server_address)
   # Connection to the database
   # Подключение к базе
-  conn_string = "host='localhost' dbname='dbmoa' user='postgres' password=''"
   try:
-    conn_pg = psycopg2.connect(conn_string)
+    conn_pg = psycopg2.connect(database="dbmoa", user="postgres", password="")
   except psycopg2.OperationalError as error:
     print(format(error))
     exit(1)
@@ -61,14 +60,14 @@ def server_udp():
     log_time = datetime.datetime.now().time()
     log_ip = addr[0]
     # Message length limit
-    # Ограниение на длину сообщения
+    # Ограничение на длину сообщения
     log_text = mes.decode('utf-8')[:200]
     # Write to the database
     # Выполнение записи в базу
     try:
       cursor.execute("insert into log(date, time, ip, text) values (%s, %s, %s, %s);",(log_date, log_time ,log_ip, log_text))
       conn_pg.commit()
-    except psycopg2.OperationalError as error:
+    except psycopg2.Error as error:
       print(format(error))
       exit(1)
 

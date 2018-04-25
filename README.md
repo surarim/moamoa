@@ -1,7 +1,7 @@
 ![Alt text](frumoa.png?raw=true "Title")
 # moamoa
 ### Logs server collector on Python and PostgreSQL
-### Version 0.21 (early development)
+### Version 0.22 (early development)
 <hr>
 The log collector consists of two components and works as follows: the irimoa.py process listens to the 514 UDP port and writes to the postgresql database, and the frumoa.py application provides web access to the database for search and monitoring tasks.
 <br>

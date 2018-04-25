@@ -8,27 +8,26 @@ import psycopg2, socket
 def db_select(post_filter):
   # Connection to the database
   # Подключение к базе
-  conn_string = "host='localhost' dbname='dbmoa' user='postgres' password=''"
   try:
-    conn_pg = psycopg2.connect(conn_string)
-  except psycopg2.OperationalError as error:
-    print(format(error))
-  cursor = conn_pg.cursor()
-  try:
-    # Check for filter or read by default
-    # Проверка на фильтр или чтение по умолчанию
-    if post_filter != "":
-      cursor.execute("select date, time, ip, text from log where text ~ %s order by id desc limit 30;", (post_filter,))
-    else:
-      cursor.execute("select date, time, ip, text from log order by id desc limit 30;")
-    rows = cursor.fetchall()
-    mes = ""
-    for row in rows:
-      mes = mes + row[0].strftime('%Y-%m-%d')+" "+row[1].strftime('%H:%M:%S')+" "+row[2]+" | "+row[3]+"<br>"
-    cursor.close()
-    conn_pg.close()
+    conn_pg = psycopg2.connect(database="dbmoa", user="postgres", password="")
   except psycopg2.OperationalError as error:
     return format(error)
+  cursor = conn_pg.cursor()
+  # Check for filter or read by default
+  # Проверка на фильтр или чтение по умолчанию
+  try:
+    if post_filter != "":
+      cursor.execute("select date, time, ip, text from log where to_tsvector('english', text) @@ to_tsquery('english', %s) order by id desc limit 1000;", (post_filter,))
+    else:
+      cursor.execute("select date, time, ip, text from log order by id desc limit 30;")
+  except psycopg2.Error as error:
+    return format(error)
+  rows = cursor.fetchall()
+  mes = ""
+  for row in rows:
+    mes = mes + row[0].strftime('%Y-%m-%d')+" "+row[1].strftime('%H:%M:%S')+" "+row[2]+" | "+row[3]+"<br>"
+  cursor.close()
+  conn_pg.close()
   return mes
 
 # WSGI application
