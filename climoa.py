@@ -11,13 +11,15 @@ while True:
   mes = input("> ")
   if mes == "q":
     break
-  try:
-    client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    client.connect(get_config('SocketFile'))
-    client.send(mes.encode('utf-8'))
-    mes = client.recv(1024)
-    print(mes.decode('utf-8'))
-    client.close()
-  except OSError:
-    print("Socket not found, server is running?")
+  #if mes.isalnum():
+  if True:
+    try:
+      client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+      client.connect(get_config('SocketFile'))
+      client.send(mes.encode('utf-8'))
+      mes = client.recv(1024)
+      print(mes.decode('utf-8'))
+      client.close()
+    except OSError:
+      print("Socket not found, server is running?")
 
