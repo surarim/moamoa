@@ -1,5 +1,4 @@
 <script>
-// Function of filter search and output to the form
 // Функция поиска по фильтру и вывода в форму
 function filter_req(event)
 {
@@ -25,7 +24,6 @@ if (event.keyCode == 13)
     };
 };
 
-// Function of getting server status (process of reading the port and writing to the database)
 // Функция получения статуса сервера (процесс чтения порта и записи в базу)
 server_status_loop = setTimeout(function tick()
 {
@@ -46,7 +44,6 @@ req.send();
 server_status_loop = setTimeout(tick, 10000);
 }, 10000);
 
-// Function of reading the database when the form starts
 // Функция чтения базы при старте формы
 window.onload = function()
     {
