@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import socket, psycopg2, datetime, os, threading
+from pubmoa import get_config
 exit_status = False
 
 # Command and status processing flow
 # Поток обработки команд и статусов
 def server_status():
   print("Started... (Ctrl+C for exit)")
-  socket_file = "/tmp/irimoa.sock"
+  socket_file = get_config('SocketFile')
   sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
   try:
     os.remove(socket_file)
@@ -43,7 +44,7 @@ def server_udp():
   # Connection to the database
   # Подключение к базе
   try:
-    conn_pg = psycopg2.connect(database="dbmoa", user="postgres", password="")
+    conn_pg = psycopg2.connect(database="dbmoa", user=get_config('DatabaseUserName'), password=get_config('DatabasePassword'))
   except psycopg2.OperationalError as error:
     print(format(error))
     exit(1)
