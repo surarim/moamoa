@@ -1,6 +1,8 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
+
 import socket, os
+from pubmoa import get_config
 
 # Client for console access to the process of reading the port and writing to the database
 # Клиент для консольного доступа к процессу чтения порта и записи в базу
@@ -11,7 +13,7 @@ while True:
     break
   try:
     client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    client.connect("/tmp/irimoa.sock")
+    client.connect(get_config('SocketFile'))
     client.send(mes.encode('utf-8'))
     mes = client.recv(1024)
     print(mes.decode('utf-8'))

@@ -1,7 +1,9 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
+
 from cgi import parse_qs, escape
 import psycopg2, socket
+from pubmoa import get_config
 
 # Function of reading from the database and filtering
 # Функция чтения из базы и фильтрации
@@ -9,7 +11,7 @@ def db_select(post_filter):
   # Connection to the database
   # Подключение к базе
   try:
-    conn_pg = psycopg2.connect(database="dbmoa", user="postgres", password="")
+    conn_pg = psycopg2.connect(database="dbmoa", user=get_config('DatabaseUserName'), password=get_config('DatabasePassword'))
   except psycopg2.OperationalError as error:
     return format(error)
   cursor = conn_pg.cursor()
