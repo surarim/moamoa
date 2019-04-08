@@ -56,11 +56,12 @@ def application(env, start_response):
         mes = "status"
         cli.send(mes.encode('utf-8'))
         mes = cli.recv(1024)
-        if mes.decode('utf-8') == "status ok":
+        if str(mes).find("status ok") != -1:
           mes = "ok"
         cli.close()
       except OSError:
         pass
+      #return mes.encode('utf-8')
     html = mes
   else:
     if env['PATH_INFO'] == "/favicon.ico":

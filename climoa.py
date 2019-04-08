@@ -11,8 +11,7 @@ while True:
   mes = input("> ")
   if mes == "q":
     break
-  #if mes.isalnum():
-  if True:
+  if mes.isalnum():
     try:
       client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
       client.connect(get_config('SocketFile'))
