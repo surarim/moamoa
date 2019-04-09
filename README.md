@@ -1,11 +1,12 @@
 ![Alt text](frumoa.png?raw=true "Title")
 # moamoa
-### Logs server collector on Python and PostgreSQL
+### Система сборки логов
 ### Version 0.32 (early development)
 <hr>
-The log collector consists of two components and works as follows: the irimoa.py process listens to the 514 UDP port and writes to the postgresql database, and the frumoa.py application provides web access to the database for search and monitoring tasks.
+Сборщик логов позволяет накапливать и хранить логи всего сетевого оборудования и серверов в одном месте, и производить поиск по содержимому.
+Система состоит из двух основных компонент: сервиса irimoa.py слушающего 514 UDP порт и записывающего в базу логи, а также сервиса frumoa.py предоставляющего web доступ к базе, системе поиска и мониторинга.
 <br>
-The journal collector has been tested and assembled on the following components:
+Протестировано и собрано с использованием следующих компонентов:
 <ul>
   <li>Python: 3.7.3</li>
   <li>psycopg2: 2.8</li>
